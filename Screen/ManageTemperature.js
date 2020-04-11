@@ -1,28 +1,48 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     View,
-    Button
+    Button,
+    Text
 } from 'react-native';
+import firebase from '../Components/FirebaseDatabase.js';
 
+function getTemperature(cb) {
+    firebase.database().ref('SmartRefrigerator/Temperature').on('value', (snapshot) => {
+        const temperatureFromDatabase = snapshot.val();
+        cb(temperatureFromDatabase);
+    })
+}
 
-const firebaseConfig = {
-    apiKey: "AIzaSyCV86WqPrfS9Fty4GY_dJUPhhc0n_GBkJg",
-    authDomain: "fir-basic-b562a.firebaseapp.com",
-    databaseURL: "https://fir-basic-b562a.firebaseio.com",
-    projectId: "fir-basic-b562a",
-    storageBucket: "fir-basic-b562a.appspot.com",
-    messagingSenderId: "342893901411",
-    appId: "1:342893901411:web:df1c54018cee8658102a56",
-    measurementId: "G-HHN0GD9G5Y"
-  };
-  
-  if(!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }
-function ManageTemperature(){
+function addTemperature(temperatureNow) {
+    temperatureNow += 1
+    firebase.database().ref('SmartRefrigerator').set({
+        Temperature: temperatureNow
+    })
+}
+
+function subsctractTemperature(temperatureNow) {
+    temperatureNow -= 1
+    firebase.database().ref('SmartRefrigerator').set({
+        Temperature: temperatureNow
+    })
+}
+
+function ManageTemperature({navigation}){
+    const [temperature, setTemperature] = useState('0');
+    useEffect(() => {
+        getTemperature(setTemperature)
+    }, [])
     return(
         <View>
-            <Text>MANAGE TEMPERATURE</Text>
+            <Button
+                title="+"
+                onPress={() => addTemperature(temperature)}
+            />
+            <Text>{temperature}</Text>
+            <Button
+                title="-"
+                onPress={() => subsctractTemperature(temperature)}
+            />
         </View>
     )
 }

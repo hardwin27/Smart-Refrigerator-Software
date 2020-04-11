@@ -6,12 +6,15 @@ import {
     Button
 } from 'react-native';
 
-function MainMenu(navigation){
+function MainMenu({navigation, route}){
     return(
         <View>
             <Button
                 title="Manage Temperature"
                 onPress={() => navigation.navigate('ManageTemperature')}
+            />
+            <Button
+                title="Item List"
             />
             <Button
                 title="Note"
