@@ -7,31 +7,31 @@ import {
 import firebase from '../Components/FirebaseDatabase.js';
 
 function getTemperature(cb) {
-    firebase.database().ref('SmartRefrigerator/Temperature').on('value', (snapshot) => {
+    firebase.database().ref('Temperature/temperature').on('value', (snapshot) => {
         const temperatureFromDatabase = snapshot.val();
         cb(temperatureFromDatabase);
-    })
+    });
 }
 
 function addTemperature(temperatureNow) {
     temperatureNow += 1
-    firebase.database().ref('SmartRefrigerator').set({
-        Temperature: temperatureNow
-    })
+    firebase.database().ref('Temperature').set({
+        temperature: temperatureNow
+    });
 }
 
 function subsctractTemperature(temperatureNow) {
     temperatureNow -= 1
-    firebase.database().ref('SmartRefrigerator').set({
-        Temperature: temperatureNow
-    })
+    firebase.database().ref('Temperature').set({
+        temperature: temperatureNow
+    });
 }
 
 function ManageTemperature({navigation}){
     const [temperature, setTemperature] = useState('0');
     useEffect(() => {
         getTemperature(setTemperature)
-    }, [])
+    }, []);
     return(
         <View>
             <Button

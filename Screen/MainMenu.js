@@ -6,7 +6,7 @@ import {
     Button
 } from 'react-native';
 
-function MainMenu({navigation, route}){
+function MainMenu({navigation}){
     return(
         <View>
             <Button
@@ -15,6 +15,7 @@ function MainMenu({navigation, route}){
             />
             <Button
                 title="Item List"
+                onPress={() => navigation.navigate('ItemList')}
             />
             <Button
                 title="Note"

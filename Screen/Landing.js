@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 })
 
 function Landing({navigation}){
-    return (
+    return(
         <View style={styles.container}>
             <Text style={styles.landingText}>Smart Refrigrator Mobile Controller</Text>
             <Button
