@@ -6,6 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import MainMenu from './Screen/MainMenu.js'
 import ManageTemperature from './Screen/ManageTemperature.js';
 import ItemList from './Screen/ItemList.js';
+import ItemDetail from './Screen/ItemDetail.js';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ function App() {
         <Stack.Screen name="MainMenu" component={MainMenu} options={{headerLeft: null}}/>
         <Stack.Screen name="ManageTemperature" component={ManageTemperature}/>
         <Stack.Screen name="ItemList" component={ItemList}/>
+        <Stack.Screen name="ItemDetail" component={ItemDetail}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

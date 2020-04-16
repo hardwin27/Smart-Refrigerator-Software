@@ -7,24 +7,10 @@ import {
     Button,
     ScrollView
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import firebase from '../Components/FirebaseDatabase.js';
 
 function getData(cb) {
-    // var dataArray = [];
-    // firebase.database().ref('itemList').orderByKey().on('value', (snapshot) => {
-    //     dataArray = [];
-    //     snapshot.forEach((snap) => {
-    //         var key = snap.key;
-    //         dataArray.push(key);
-    //     })
-
-    //     cb([
-    //         {
-    //             title: "Test",
-    //             data: dataArray
-    //         }
-    //     ]);
-    // });
 
     var rawFood = [];
     var fruit = [];
@@ -99,10 +85,14 @@ function getData(cb) {
 }
 
 function Item({title}) {
+    const navigation = useNavigation();
     return(
         <View>
             <Button
                 title={title}
+                onPress={() => navigation.navigate('ItemDetail', {
+                    item: title
+                })}
             />
         </View>
     )
@@ -119,12 +109,15 @@ function ItemList({navigation}) {
                 <SectionList
                     sections={arrayOfData}
                     keyExtractor={(item, index) => item + index}
-                    renderItem={({item}) => <Item title={item}/>}
+                    renderItem={({item, navigation}) => <Item title={item}/>}
                     renderSectionHeader={({section: {title}}) => (
                         <Text>{title}</Text>
                     )}
                 />
             </SafeAreaView>
+            <Button
+                title="Add Item"
+            />
         </ScrollView>
     )
 }
