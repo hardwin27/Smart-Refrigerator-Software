@@ -38,6 +38,9 @@ function ItemDetail({navigation, route}) {
             <View>
                 <Button
                     title="Edit"
+                    onPress={() => navigation.navigate('EditItem', {
+                        itemName: item
+                    })}
                 />
                 <Button
                     title="Delete"

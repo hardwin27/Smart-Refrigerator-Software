@@ -8,6 +8,7 @@ import ManageTemperature from './Screen/ManageTemperature.js';
 import ItemList from './Screen/ItemList.js';
 import ItemDetail from './Screen/ItemDetail.js';
 import AddItem from './Screen/AddItem.js';
+import EditItem from  './Screen/EditItem.js';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,7 @@ function App() {
         <Stack.Screen name="ItemList" component={ItemList}/>
         <Stack.Screen name="ItemDetail" component={ItemDetail}/>
         <Stack.Screen name="AddItem" component={AddItem}/>
+        <Stack.Screen name="EditItem" component={EditItem}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
