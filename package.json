@@ -22,7 +22,8 @@
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.3.7",
     "react-navigation-stack": "^2.3.11",
-    "firebase": "7.9.0"
+    "firebase": "7.9.0",
+    "@react-native-community/datetimepicker": "2.2.2"
   },
   "devDependencies": {
     "babel-preset-expo": "~8.1.0",

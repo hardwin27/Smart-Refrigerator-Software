@@ -7,8 +7,7 @@ import {
 } from 'react-native';
 import firebase from '../Components/FirebaseDatabase.js';
 
-function getDetail(cb, item)
-{
+function getDetail(cb, item) {
     var detail = [];
     var refDir = 'ItemList/' + item;
     firebase.database().ref(refDir).on('value', (snapshot) => {
@@ -21,7 +20,11 @@ function getDetail(cb, item)
     })
 }
 
-function ItemDetail({route}) {
+function deleteItem(item) { 
+    firebase.database().ref('ItemList').child(item).remove();
+}
+
+function ItemDetail({navigation, route}) {
     let {item} = route.params;
     const [arrayForDetail, setArrayForDetail] = useState([]);
     useEffect(() => {
@@ -29,9 +32,18 @@ function ItemDetail({route}) {
     }, [])
     return(
         <View>
-            <Text>Expire Date: {arrayForDetail[0]}</Text>
-            <Text>Quantity: {arrayForDetail[1]}</Text>
-            <Text>{arrayForDetail[2]}</Text>
+            <Text>{arrayForDetail[0]}</Text>
+            <Text>Expire Date: {arrayForDetail[1]}</Text>
+            <Text>Quantity: {arrayForDetail[2]}</Text>
+            <View>
+                <Button
+                    title="Edit"
+                />
+                <Button
+                    title="Delete"
+                    onPress={() => {deleteItem(item); navigation.goBack();}}
+                />
+            </View>
         </View>
     );
 }

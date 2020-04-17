@@ -117,6 +117,7 @@ function ItemList({navigation}) {
             </SafeAreaView>
             <Button
                 title="Add Item"
+                onPress={() => navigation.navigate('AddItem')}
             />
         </ScrollView>
     )

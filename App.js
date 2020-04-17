@@ -7,6 +7,7 @@ import MainMenu from './Screen/MainMenu.js'
 import ManageTemperature from './Screen/ManageTemperature.js';
 import ItemList from './Screen/ItemList.js';
 import ItemDetail from './Screen/ItemDetail.js';
+import AddItem from './Screen/AddItem.js';
 
 const Stack = createStackNavigator();
 
@@ -19,18 +20,10 @@ function App() {
         <Stack.Screen name="ManageTemperature" component={ManageTemperature}/>
         <Stack.Screen name="ItemList" component={ItemList}/>
         <Stack.Screen name="ItemDetail" component={ItemDetail}/>
+        <Stack.Screen name="AddItem" component={AddItem}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default App;
