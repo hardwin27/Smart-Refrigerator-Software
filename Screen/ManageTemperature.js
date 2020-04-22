@@ -1,10 +1,27 @@
 import React, {useState, useEffect} from 'react';
 import {
     View,
-    Button,
-    Text
+    TouchableOpacity,
+    Text,
+    StyleSheet
 } from 'react-native';
 import firebase from '../Components/FirebaseDatabase.js';
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#3498DB'
+    },
+    text: {
+        fontSize: 50,
+        color: '#ffffff',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        margin: 20
+    }
+})
 
 function getTemperature(cb) {
     firebase.database().ref('Temperature/temperature').on('value', (snapshot) => {
@@ -33,16 +50,18 @@ function ManageTemperature({navigation}){
         getTemperature(setTemperature)
     }, []);
     return(
-        <View>
-            <Button
-                title="+"
+        <View style={styles.container}>
+            <TouchableOpacity
                 onPress={() => addTemperature(temperature)}
-            />
-            <Text>{temperature}</Text>
-            <Button
-                title="-"
+            >
+                <Text style={styles.text}>+</Text>
+            </TouchableOpacity>
+            <Text style={styles.text}>{temperature}</Text>
+            <TouchableOpacity
                 onPress={() => subsctractTemperature(temperature)}
-            />
+            >
+                <Text style={styles.text}>-</Text>
+            </TouchableOpacity>
         </View>
     )
 }

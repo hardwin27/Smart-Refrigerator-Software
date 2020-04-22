@@ -4,10 +4,58 @@ import {
     StyleSheet,
     Text,
     TextInput,
-    Button,
+    TouchableOpacity,
     Picker
 } from 'react-native';
 import firebase from '../Components/FirebaseDatabase.js';
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: '#3498DB', 
+    },
+    itemNameText: {
+        fontSize: 30,
+        color: '#ffffff',
+        textAlign: 'center'
+    },
+    categoryText: {
+        fontSize: 20,
+        color: '#ffffff'
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        margin: 20 
+    },
+    expireDateText: {
+        fontSize: 20,
+        color: '#ffffff',
+        flex: 3
+    },
+    yearInput: {
+        flex: 2
+    },
+    monthAndDateInput: {
+        flex: 1
+    },
+    picker: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 20
+    },
+    editButtonContainer: {
+        backgroundColor: '#34db34',
+        borderRadius: 20,
+        padding: 10
+    },
+    editButtonText: {
+        color: 'white',
+        textAlign: 'center',
+        fontSize: 30
+    }
+
+})
 
 function getData(itemName, cbQuantity, cbYear, cbMonth, cbDate, cbCategory) {
     firebase.database().ref('ItemList').child(itemName).on('value', (snapshot) => {
@@ -16,7 +64,7 @@ function getData(itemName, cbQuantity, cbYear, cbMonth, cbDate, cbCategory) {
         let itemQuantity = snapshot.child('quantity').val();
         let arrayOfExpireDate = itemExpireDate.split("-");
 
-        cbQuantity(itemQuantity);
+        cbQuantity(itemQuantity.toString());
         cbYear(arrayOfExpireDate[0]);
         cbMonth(arrayOfExpireDate[1]);
         cbDate(arrayOfExpireDate[2]);
@@ -26,17 +74,18 @@ function getData(itemName, cbQuantity, cbYear, cbMonth, cbDate, cbCategory) {
 
 function editData(itemName, itemQuantity, expireDateYear, expireDateMonth, expireDateDate, itemCategory) {
     let itemExpireDate = expireDateYear + "-" + expireDateMonth + "-" + expireDateDate;
+    let quantity = parseInt(itemQuantity)
     firebase.database().ref('ItemList').child(itemName).update({
         category: itemCategory,
         expireDate: itemExpireDate,
-        quantity: itemQuantity
+        quantity: quantity
     });
 }
 
 function EditItem({navigation, route}) {
     let {itemName} = route.params;
 
-    const [quantity, setQuantity] = useState(0);
+    const [quantity, setQuantity] = useState("");
     const [expireYear, setExpireYear] = useState("");
     const [expireMonth, setExpireMonth] = useState("");
     const [expireDate, setExpireDate] = useState("");
@@ -47,38 +96,54 @@ function EditItem({navigation, route}) {
     }, []);
 
     return(
-        <View>
-            <Text>{itemName}</Text>
-            <Text>Quantity</Text>
-            <TextInput
-                placeholder="Item Quantity"
-                keyboardType="numeric"
-                value={quantity}
-                onChangeText={(text) => setQuantity(text)}
-            />
-            <Text>Expire Date</Text>
-            <TextInput
-                placeholder="YYYY"
-                maxLength={4}
-                keyboardType="numeric"
-                value={expireYear}
-                onChangeText={(text) => setExpireYear(text)}
-            />
-            <TextInput
-                placeholder="MM"
-                maxLength={2}
-                keyboardType="numeric"
-                value={expireMonth}
-                onChangeText={(text) => setExpireMonth(text)}
-            />
-            <TextInput
-                placeholder="DD"
-                maxLength={2}
-                keyboardType="numeric"
-                value={expireDate}
-                onChangeText={(text) => setExpireDate(text)}
-            />
+        <View style={styles.container}>
+            <Text style={styles.itemNameText}>{itemName}</Text>
+            
+            <View style={styles.inputContainer}>
+            <Text style={styles.categoryText}>Quantity: </Text>
+                <TextInput
+                    placeholder="Item Quantity"
+                    keyboardType="numeric"
+                    value={quantity}
+                    onChangeText={(text) => setQuantity(text)}
+                />
+            </View>
+
+            <View style={styles.inputContainer}>
+                <Text style={styles.expireDateText}>Expire Date: </Text>
+                <View style={styles.yearInput}>
+                    <TextInput
+                        placeholder="YYYY"
+                        maxLength={4}
+                        keyboardType="numeric"
+                        value={expireYear}
+                        onChangeText={(text) => setExpireYear(text)}
+                    />
+                </View>
+                
+                <View style={styles.monthAndDateInput}>
+                    <TextInput
+                        placeholder="MM"
+                        maxLength={2}
+                        keyboardType="numeric"
+                        onChangeText={(text) => setExpireMonth(text)}
+                        style={styles.monthAndDateInput}
+                    />    
+                </View>
+
+                <View style={styles.monthAndDateInput}>
+                    <TextInput
+                        placeholder="DD"
+                        maxLength={2}
+                        keyboardType="numeric"
+                        onChangeText={(text) => setExpireDate(text)}
+                        style={styles.monthAndDateInput}
+                    />    
+                </View>
+            </View>
+            
             <Picker
+                style={styles.picker}
                 selectedValue={category}
                 onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
             >
@@ -89,10 +154,12 @@ function EditItem({navigation, route}) {
                 <Picker.Item label="Snack" value="snack"/>
                 <Picker.Item label="Other" value="other"/>
             </Picker>
-            <Button
-                title="Edit"
+            <TouchableOpacity
+                style={styles.editButtonContainer}
                 onPress={() => {editData(itemName, quantity, expireYear, expireMonth, expireDate, category); navigation.goBack();}}
-            />
+            >
+                <Text style={styles.editButtonText}>EDIT</Text>
+            </TouchableOpacity>
         </View>
     )
 }

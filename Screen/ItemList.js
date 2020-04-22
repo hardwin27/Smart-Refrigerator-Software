@@ -4,11 +4,51 @@ import {
     View,
     Text,
     SafeAreaView,
-    Button,
-    ScrollView
+    TouchableOpacity,
+    ScrollView,
+    StyleSheet
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import firebase from '../Components/FirebaseDatabase.js';
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#3498DB'
+    },
+    itemCategoryContainer: {
+        // backgroundColor: '#34db34',
+        margin: 10,
+        borderStyle: 'dashed',
+        borderBottomColor: '#ffffff',
+        borderBottomWidth: 5
+    },
+    itemCategoryText: {
+        color: '#ffffff',
+        fontSize: 30,
+        textAlign: 'center'
+    },
+    itemNameContainer: {
+        margin: 10,
+        borderColor: 'black'
+    },
+    itemNameText: {
+        fontSize: 20,
+        color: '#ffffff'
+    },
+    addButtonContainer: {
+        backgroundColor: '#34db34',
+        borderRadius: 20,
+        padding: 10
+    },
+    addButtonText: {
+        color: 'white',
+        textAlign: 'center',
+        fontSize: 30
+    }
+})
 
 function getData(cb) {
 
@@ -88,12 +128,14 @@ function Item({title}) {
     const navigation = useNavigation();
     return(
         <View>
-            <Button
-                title={title}
+            <TouchableOpacity
+                style={styles.itemNameContainer}
                 onPress={() => navigation.navigate('ItemDetail', {
                     item: title
                 })}
-            />
+            >
+                <Text style={styles.itemNameText}>{title}</Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -104,22 +146,28 @@ function ItemList({navigation}) {
         getData(setArrayOfData)
     }, []);
     return(
-        <ScrollView>
-            <SafeAreaView>
-                <SectionList
-                    sections={arrayOfData}
-                    keyExtractor={(item, index) => item + index}
-                    renderItem={({item, navigation}) => <Item title={item}/>}
-                    renderSectionHeader={({section: {title}}) => (
-                        <Text>{title}</Text>
-                    )}
-                />
-            </SafeAreaView>
-            <Button
-                title="Add Item"
-                onPress={() => navigation.navigate('AddItem')}
-            />
-        </ScrollView>
+        <View style={styles.container}>
+            <ScrollView>
+                <SafeAreaView>
+                    <SectionList
+                        sections={arrayOfData}
+                        keyExtractor={(item, index) => item + index}
+                        renderItem={({item, navigation}) => <Item title={item}/>}
+                        renderSectionHeader={({section: {title}}) => (
+                            <View style={styles.itemCategoryContainer}>
+                                <Text style={styles.itemCategoryText}>{title}</Text>
+                            </View>
+                        )}
+                    />
+                </SafeAreaView>
+                <TouchableOpacity
+                    style={styles.addButtonContainer}
+                    onPress={() => navigation.navigate('AddItem')}
+                >
+                    <Text style={styles.addButtonText}>Add Item</Text>
+                </TouchableOpacity>
+            </ScrollView>
+        </View>
     )
 }
 

@@ -3,9 +3,38 @@ import {
     View,
     StyleSheet,
     Text,
-    Button
+    TouchableOpacity
 } from 'react-native';
 import firebase from '../Components/FirebaseDatabase.js';
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: '#3498DB', 
+    },
+    dataText: {
+        fontSize: 20,
+        margin: 10,
+        color: '#ffffff',
+    },
+    allButtonContainer: {
+        margin: 10,
+        flexDirection: 'row'
+    },
+    button: {
+        backgroundColor: '#34db34',
+        borderRadius: 20,
+        padding: 10,
+        margin: 10,
+        flex: 1
+    },
+    buttonText: {
+        color: '#ffffff',
+        textAlign: 'center',
+        fontSize: 20
+    }
+})
 
 function getDetail(cb, item) {
     var detail = [];
@@ -31,21 +60,25 @@ function ItemDetail({navigation, route}) {
         getDetail(setArrayForDetail, item)
     }, [])
     return(
-        <View>
-            <Text>{arrayForDetail[0]}</Text>
-            <Text>Expire Date: {arrayForDetail[1]}</Text>
-            <Text>Quantity: {arrayForDetail[2]}</Text>
-            <View>
-                <Button
-                    title="Edit"
+        <View style={styles.container}>
+            <Text style={styles.dataText}>{arrayForDetail[0]}</Text>
+            <Text style={styles.dataText}>Expire Date: {arrayForDetail[1]}</Text>
+            <Text style={styles.dataText}>Quantity: {arrayForDetail[2]}</Text>
+            <View style={styles.allButtonContainer}>
+                <TouchableOpacity
+                    style={styles.button}
                     onPress={() => navigation.navigate('EditItem', {
                         itemName: item
                     })}
-                />
-                <Button
-                    title="Delete"
+                >
+                    <Text style={styles.buttonText}>EDIT</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
                     onPress={() => {deleteItem(item); navigation.goBack();}}
-                />
+                >
+                    <Text style={styles.buttonText}>DELETE</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
